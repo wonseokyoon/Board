@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>홈페이지</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+</head>
+<body>
+<div class="container text-center my-5">
+  <h1 th:if="${username}" th:text="'환영합니다, ' + ${username} + '님!'"></h1>
+  <h1 th:if="${username == null}">로그인 해 주세요!</h1>
+</div>
+
+<div class="text-center mt-4">
+  <a th:href="@{/user/login}" class="btn btn-primary" th:if="${username == null}">로그인</a>
+  <a th:href="@{/user/logout}" class="btn btn-danger" sec:authorize="isAuthenticated()">로그아웃</a>
+  <a th:href="@{/user/signup}" class="btn btn-success">회원가입</a>
+</div>
+
+<script th:src="@{/bootstrap.min.js}"></script>
+</body>
+</html>

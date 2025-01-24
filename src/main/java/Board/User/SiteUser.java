@@ -13,13 +13,13 @@ public class SiteUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 15)
+    @Column(unique = true)
     private String email;
 
-    @Column(nullable = false,length = 15)
+    @Column(nullable = false)
     private String password;
 
-    @Column(unique = true,nullable = false,length = 15)
+    @Column(unique = true,nullable = false)
     private String username;
 
 }
