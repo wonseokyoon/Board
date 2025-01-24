@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -22,6 +23,10 @@ public class PostService {
         return postList;
     }
 
+    public Optional<Post> findById(Integer id) {
+        Optional<Post> post=postRepository.findById(id);
+        return post;
+    }
 
 
 }
