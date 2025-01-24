@@ -1,0 +1,25 @@
+package Board.User;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+public class SiteUser {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(length = 15)
+    private String email;
+
+    @Column(nullable = false,length = 15)
+    private String password;
+
+    @Column(unique = true,nullable = false,length = 15)
+    private String username;
+
+}

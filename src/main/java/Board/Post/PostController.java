@@ -5,14 +5,13 @@ import Board.Exception.BaseException;
 import Board.Exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @Transactional
 @RequiredArgsConstructor
 @RequestMapping("/post")
@@ -82,7 +81,7 @@ public class PostController {
 
     // 내용 기반 검색(포함하면 반환)
     @GetMapping("/search/content")
-    public ResponseEntity<?> searchCotent(@RequestParam String content) throws BaseException {
+    public ResponseEntity<?> searchContent(@RequestParam String content) throws BaseException {
         List<Post> postList=postService.findByContent(content);
         if(postList.isEmpty()){
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
@@ -102,6 +101,7 @@ public class PostController {
     }
 
     // 작성자 기반 검색
+
 
     // 페이징 처리
 }
