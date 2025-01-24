@@ -46,5 +46,18 @@ public class PostController {
     }
 
     // 수정
+    @PostMapping("/update/{id}")
+    public ResponseEntity<?> modifyPost(@PathVariable("id") Integer id
+    ,@RequestBody UpdateRequest updateRequest) throws BaseException {
+        Optional<Post> post=postService.findById(id);
+        if(post.isPresent()){
+            Post modified=postService.modify(post.get(),updateRequest);
+            return  ResponseEntity.ok(modified);
+        }else{
+            throw new BaseException(ErrorCode.POST_NOT_FOUND);
+        }
+    }
+
+    // 삭제
 
 }
