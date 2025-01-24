@@ -46,7 +46,7 @@ public class PostController {
     }
 
     // 수정
-    @PostMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> modifyPost(@PathVariable("id") Integer id
     ,@RequestBody UpdateRequest updateRequest) throws BaseException {
         Optional<Post> post=postService.findById(id);
@@ -59,7 +59,7 @@ public class PostController {
     }
 
     // 삭제
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePost(@PathVariable("id") Integer id) throws BaseException {
         Optional<Post> post=postService.findById(id);
         if(post.isPresent()){
@@ -79,6 +79,7 @@ public class PostController {
         }
         return ResponseEntity.ok(postList);
     }
+
     // 내용 기반 검색(포함하면 반환)
     @GetMapping("/search/content")
     public ResponseEntity<?> searchCotent(@RequestParam String content) throws BaseException {
