@@ -70,4 +70,28 @@ public class PostController {
         }
     }
 
+    // 제목 기반 검색(포함하면 반환)
+    @GetMapping("/search/title")
+    public ResponseEntity<?> searchTitle(@RequestParam String title) throws BaseException {
+        List<Post> postList=postService.findByTitle(title);
+        if(postList.isEmpty()){
+            throw new BaseException(ErrorCode.POST_NOT_FOUND);
+        }
+        return ResponseEntity.ok(postList);
+    }
+    // 내용 기반 검색(포함하면 반환)
+    @GetMapping("/search/content")
+    public ResponseEntity<?> searchCotent(@RequestParam String content) throws BaseException {
+        List<Post> postList=postService.findByContent(content);
+        if(postList.isEmpty()){
+            throw new BaseException(ErrorCode.POST_NOT_FOUND);
+        }
+        return ResponseEntity.ok(postList);
+    }
+
+    //제목 + 내용 같이 검색
+
+    // 작성자 기반 검색
+
+    // 페이징 처리
 }
