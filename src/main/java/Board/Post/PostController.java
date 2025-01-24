@@ -59,5 +59,15 @@ public class PostController {
     }
 
     // 삭제
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<?> deletePost(@PathVariable("id") Integer id) throws BaseException {
+        Optional<Post> post=postService.findById(id);
+        if(post.isPresent()){
+            postService.delete(post.get());
+            return ResponseEntity.ok("게시물이 삭제되었습니다.");
+        }else{
+            throw new BaseException(ErrorCode.POST_NOT_FOUND);
+        }
+    }
 
 }
