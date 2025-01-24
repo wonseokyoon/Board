@@ -90,6 +90,15 @@ public class PostController {
     }
 
     //제목 + 내용 같이 검색
+    @GetMapping("/search/all")
+    public ResponseEntity<?> searchAll(@RequestParam String word) throws BaseException {
+        List<Post> postList=postService.findByTitleOrContent(word);
+        if(postList.isEmpty()){
+            throw new BaseException(ErrorCode.POST_NOT_FOUND);
+        }else{
+            return ResponseEntity.ok(postList);
+        }
+    }
 
     // 작성자 기반 검색
 

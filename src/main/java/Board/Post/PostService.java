@@ -50,5 +50,15 @@ public class PostService {
         return postList;
     }
 
+    public List<Post> findByTitleOrContent(String word) {
+        List<Post> postListByTitle=postRepository.findByTitleContaining(word);
+        List<Post> postListByContent=postRepository.findByContentContaining(word);
 
+        Set<Post> postSet=new LinkedHashSet<>(postListByTitle);
+        postSet.addAll(postListByContent);
+
+        return postSet.stream()
+                .sorted(Comparator.comparing(Post::getId))
+                .collect(Collectors.toList());
+    }
 }
