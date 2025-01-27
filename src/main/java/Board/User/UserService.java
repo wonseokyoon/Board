@@ -2,7 +2,10 @@ package Board.User;
 
 import Board.Exception.BaseException;
 import Board.Exception.ErrorCode;
+import Board.Jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    JwtUtil jwtUtil;
+
 
     public SiteUser create(String username, String email, String password) {
         SiteUser user = new SiteUser();
@@ -38,6 +44,22 @@ public class UserService {
             return user.get();
         }else {
             throw new BaseException(ErrorCode.USER_NOT_FOUND);
+        }
+    }
+
+    public LoginResponse validateUser(LoginForm loginForm) {
+        // 사용자 찾기
+        SiteUser user = userRepository.findByUsername(loginForm.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + loginForm.getUsername()));
+
+        // 비밀번호 확인
+        if (passwordEncoder.matches(loginForm.getPassword(), user.getPassword())) {
+            // JWT 생성
+            String accessToken = jwtUtil.generateAccessToken(user.getUsername());
+            String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
+            return new LoginResponse(accessToken, refreshToken); // 두 토큰을 포함한 Response 반환
+        } else {
+            throw new RuntimeException("Invalid credentials");
         }
     }
 }

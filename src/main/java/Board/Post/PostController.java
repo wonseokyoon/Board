@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Transactional
@@ -27,26 +28,21 @@ public class PostController {
     //작성
 
     @PostMapping("/create")
-    public ResponseEntity<PostResponse> createPost(@RequestBody Post post, Principal principal) throws BaseException {
+    public ResponseEntity<PostDto> createPost(@RequestBody Post post, Principal principal) throws BaseException {
         SiteUser user=userService.getUser(principal.getName());
         Post createPost=postService.create(post,user);
-        PostResponse response=new PostResponse(
-                createPost.getId(),
-                createPost.getTitle(),
-                createPost.getContent(),
-                createPost.getAuthor().getUsername(),
-                createPost.getCreateTime().toString(),
-                null
-        );
-
-        return ResponseEntity.ok(response);
+        PostDto postDto=new PostDto(createPost);
+        return ResponseEntity.ok(postDto);
     }
 
     //전체 조회
     @GetMapping
-    public ResponseEntity<List<Post>> listPost(){
+    public ResponseEntity<List<PostDto>> listPost(){
         List<Post> postList=postService.list();
-        return ResponseEntity.ok(postList);
+        List<PostDto> postDtos=postList.stream()
+                .map(PostDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(postDtos);
     }
 
     // ID 기반 검색
@@ -54,7 +50,8 @@ public class PostController {
     public ResponseEntity<?> findPost(@PathVariable("id") Integer id) throws BaseException {
         Optional<Post> post=postService.findById(id);
         if(post.isPresent()){
-            return ResponseEntity.ok(post.get());
+            PostDto postDto=new PostDto(post.get());
+            return ResponseEntity.ok(postDto);
         }else{
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }
@@ -63,11 +60,18 @@ public class PostController {
     // 수정
     @PutMapping("/{id}")
     public ResponseEntity<?> modifyPost(@PathVariable("id") Integer id
-    ,@RequestBody UpdateRequest updateRequest) throws BaseException {
+    ,@RequestBody UpdateRequest updateRequest,Principal principal) throws BaseException {
         Optional<Post> post=postService.findById(id);
         if(post.isPresent()){
+            SiteUser user=post.get().getAuthor();
+            SiteUser currentUser=userService.getUser(principal.getName());
+
+            if(!user.getId().equals(currentUser.getId())){
+                throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+            }
             Post modified=postService.modify(post.get(),updateRequest);
-            return  ResponseEntity.ok(modified);
+            PostDto postDto=new PostDto(modified);
+            return  ResponseEntity.ok(postDto);
         }else{
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }
