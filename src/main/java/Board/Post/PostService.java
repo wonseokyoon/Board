@@ -1,5 +1,6 @@
 package Board.Post;
 
+import Board.User.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,9 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Post create(Post post) {
+    public Post create(Post post, SiteUser user) {
         post.setCreateTime(LocalDateTime.now());
+        post.setAuthor(user);
         return postRepository.save(post);
     }
 

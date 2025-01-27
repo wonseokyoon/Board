@@ -1,5 +1,7 @@
 package Board.User;
 
+import Board.Exception.BaseException;
+import Board.Exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,15 @@ public class UserService {
             return true;
         }else{
             return false;
+        }
+    }
+
+    public SiteUser getUser(String username) throws BaseException {
+        Optional<SiteUser> user=userRepository.findByUsername(username);
+        if(user.isPresent()){
+            return user.get();
+        }else {
+            throw new BaseException(ErrorCode.USER_NOT_FOUND);
         }
     }
 }

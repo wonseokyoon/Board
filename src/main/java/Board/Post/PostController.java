@@ -3,11 +3,15 @@ package Board.Post;
 
 import Board.Exception.BaseException;
 import Board.Exception.ErrorCode;
+import Board.User.SiteUser;
+import Board.User.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,12 +22,24 @@ import java.util.Optional;
 public class PostController {
 
     private final PostService postService;
+    private final UserService userService;
 
     //작성
+
     @PostMapping("/create")
-    public ResponseEntity<Post> createPost(@RequestBody Post post){
-        Post createPost=postService.create(post);
-        return ResponseEntity.ok(createPost);
+    public ResponseEntity<PostResponse> createPost(@RequestBody Post post, Principal principal) throws BaseException {
+        SiteUser user=userService.getUser(principal.getName());
+        Post createPost=postService.create(post,user);
+        PostResponse response=new PostResponse(
+                createPost.getId(),
+                createPost.getTitle(),
+                createPost.getContent(),
+                createPost.getAuthor().getUsername(),
+                createPost.getCreateTime().toString(),
+                null
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     //전체 조회

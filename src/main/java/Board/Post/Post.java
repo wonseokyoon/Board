@@ -1,5 +1,6 @@
 package Board.Post;
 
+import Board.User.SiteUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,7 +21,8 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String author;
+    @ManyToOne
+    private SiteUser author;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime createTime;
