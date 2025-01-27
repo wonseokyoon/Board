@@ -7,16 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -56,9 +46,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginForm loginForm) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequset loginRequset) {
         try {
-            LoginResponse loginResponse = userService.validateUser(loginForm);
+            LoginResponse loginResponse = userService.validateUser(loginRequset);
             return ResponseEntity.ok(loginResponse); // JWT 토큰을 포함한 응답 반환
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // 인증 실패 시 401 Unauthorized 반환

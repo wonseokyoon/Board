@@ -6,6 +6,7 @@ import Board.Exception.ErrorCode;
 import Board.User.SiteUser;
 import Board.User.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,10 @@ public class PostController {
     @PutMapping("/{id}")
     public ResponseEntity<?> modifyPost(@PathVariable("id") Integer id
     ,@RequestBody UpdateRequest updateRequest,Principal principal) throws BaseException {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자가 인증되지 않았습니다.");
+        }
+
         Optional<Post> post=postService.findById(id);
         if(post.isPresent()){
             SiteUser user=post.get().getAuthor();

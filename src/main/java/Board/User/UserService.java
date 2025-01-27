@@ -47,13 +47,13 @@ public class UserService {
         }
     }
 
-    public LoginResponse validateUser(LoginForm loginForm) {
+    public LoginResponse validateUser(LoginRequset loginRequset) {
         // 사용자 찾기
-        SiteUser user = userRepository.findByUsername(loginForm.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + loginForm.getUsername()));
+        SiteUser user = userRepository.findByUsername(loginRequset.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + loginRequset.getUsername()));
 
         // 비밀번호 확인
-        if (passwordEncoder.matches(loginForm.getPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(loginRequset.getPassword(), user.getPassword())) {
             // JWT 생성
             String accessToken = jwtUtil.generateAccessToken(user.getUsername());
             String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());

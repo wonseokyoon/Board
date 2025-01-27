@@ -43,7 +43,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // 필요 시 CSRF 비활성화
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/user/login", "/user/signup").permitAll() // 로그인과 회원가입 요청 허용
-                        .anyRequest().authenticated() // 그 외 요청은 인증 필요
+                                .requestMatchers("/post/create", "/post/modify", "/post/delete").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
 
