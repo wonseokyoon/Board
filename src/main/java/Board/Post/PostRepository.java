@@ -1,5 +1,6 @@
 package Board.Post;
 
+import Board.Post.Entity.Post;
 import Board.User.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

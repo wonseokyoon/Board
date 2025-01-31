@@ -1,10 +1,11 @@
 package Board.Post;
 
+import Board.Post.Dto.UpdateRequest;
+import Board.Post.Entity.Post;
 import Board.User.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

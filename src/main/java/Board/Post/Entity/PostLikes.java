@@ -1,4 +1,4 @@
-package Board.Post;
+package Board.Post.Entity;
 
 import Board.User.SiteUser;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package Board.User;
+package Board.User.Dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

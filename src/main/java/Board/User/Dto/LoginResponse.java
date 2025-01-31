@@ -1,4 +1,4 @@
-package Board.User;
+package Board.User.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package Board.Post;
+package Board.Post.Dto;
 
 import lombok.Data;
 

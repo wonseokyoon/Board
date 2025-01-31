@@ -3,16 +3,17 @@ package Board.Post;
 
 import Board.Exception.BaseException;
 import Board.Exception.ErrorCode;
+import Board.Post.Dto.PageResponse;
+import Board.Post.Dto.PostDto;
+import Board.Post.Dto.UpdateRequest;
+import Board.Post.Entity.Post;
 import Board.User.SiteUser;
 import Board.User.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class PostController {
 //    전체 조회
     @GetMapping
     public ResponseEntity<PageResponse<PostDto>> listPost(@RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "10") int size){
+                                                          @RequestParam(defaultValue = "10") int size){
         Pageable pageable=PageRequest.of(page,size);
         Page<Post> postPage=postService.list(pageable);
         List<PostDto> postDtos=postPage.stream()
@@ -68,7 +69,7 @@ public class PostController {
     // 수정
     @PutMapping("/{id}")
     public ResponseEntity<?> modifyPost(@PathVariable("id") Integer id
-    ,@RequestBody UpdateRequest updateRequest,Principal principal) throws BaseException {
+    , @RequestBody UpdateRequest updateRequest, Principal principal) throws BaseException {
         if (principal == null) {
             throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
         }

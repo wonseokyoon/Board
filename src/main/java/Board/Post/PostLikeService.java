@@ -1,5 +1,8 @@
 package Board.Post;
 
+import Board.Post.Entity.Post;
+import Board.Post.Entity.PostDisLikes;
+import Board.Post.Entity.PostLikes;
 import Board.User.SiteUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +19,7 @@ public class PostLikeService {
     @Autowired
     PostDislikeRepository postDislikeRepository;
 
-    public Post addLike(Post post,SiteUser user){
+    public Post addLike(Post post, SiteUser user){
         // 이미 따봉 누름
         if(postLikeRepository.findByPostAndUser(post,user).isPresent()){
             return subLike(post,user);
