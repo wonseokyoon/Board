@@ -63,4 +63,10 @@ public class PostService {
                 .sorted(Comparator.comparing(Post::getId))
                 .collect(Collectors.toList());
     }
+
+    public List<Post> findByUser(SiteUser user) {
+        List<Post> postList=postRepository.findByUser(user);
+        return postList;
+
+    }
 }

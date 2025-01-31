@@ -63,7 +63,7 @@ public class PostController {
     public ResponseEntity<?> modifyPost(@PathVariable("id") Integer id
     ,@RequestBody UpdateRequest updateRequest,Principal principal) throws BaseException {
         if (principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자가 인증되지 않았습니다.");
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
         }
 
         Optional<Post> post=postService.findById(id);
@@ -84,9 +84,17 @@ public class PostController {
 
     // 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable("id") Integer id) throws BaseException {
+    public ResponseEntity<?> deletePost(@PathVariable("id") Integer id,Principal principal) throws BaseException {
         Optional<Post> post=postService.findById(id);
+        if (principal == null) {
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
         if(post.isPresent()){
+            SiteUser user=post.get().getAuthor();
+            SiteUser currentUser=userService.getUser(principal.getName());
+            if(!user.getId().equals(currentUser.getId())){
+                throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+            }
             postService.delete(post.get());
             return ResponseEntity.ok("게시물이 삭제되었습니다.");
         }else{
@@ -126,6 +134,16 @@ public class PostController {
     }
 
     // 작성자 기반 검색
+    @GetMapping("/search/user")
+    public ResponseEntity<?> searchUser(@RequestParam String name) throws BaseException {
+        SiteUser user= userService.getUser(name);
+        List<Post> postList=postService.findByUser(user);
+        if(postList.isEmpty()){
+            throw new BaseException(ErrorCode.POST_NOT_FOUND);
+        }else{
+            return ResponseEntity.ok(postList);
+        }
+    }
 
 
     // 페이징 처리
