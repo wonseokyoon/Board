@@ -2,6 +2,8 @@ package Board.Post;
 
 import Board.User.SiteUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,8 +22,13 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public List<Post> list() {
-        List<Post> postList=postRepository.findAll();
+//    public List<Post> list() {
+//        List<Post> postList=postRepository.findAll();
+//        return postList;
+//    }
+
+    public Page<Post> list(Pageable pageable){
+        Page<Post> postList=postRepository.findAll(pageable);
         return postList;
     }
 
@@ -44,6 +51,11 @@ public class PostService {
 
     public List<Post> findByTitle(String title) {
         List<Post> postList=postRepository.findByTitleContaining(title);
+        return postList;
+    }
+
+    public Page<Post> findByTitle(String title,Pageable pageable) {
+        Page<Post> postList=postRepository.findByTitleContaining(title,pageable);
         return postList;
     }
 

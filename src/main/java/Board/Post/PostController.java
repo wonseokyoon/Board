@@ -6,6 +6,9 @@ import Board.Exception.ErrorCode;
 import Board.User.SiteUser;
 import Board.User.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,14 +39,17 @@ public class PostController {
         return ResponseEntity.ok(postDto);
     }
 
-    //전체 조회
+//    전체 조회
     @GetMapping
-    public ResponseEntity<List<PostDto>> listPost(){
-        List<Post> postList=postService.list();
-        List<PostDto> postDtos=postList.stream()
+    public ResponseEntity<PageResponse<PostDto>> listPost(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "10") int size){
+        Pageable pageable=PageRequest.of(page,size);
+        Page<Post> postPage=postService.list(pageable);
+        List<PostDto> postDtos=postPage.stream()
                 .map(PostDto::new)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(postDtos);
+        PageResponse<PostDto> response=new PageResponse(postDtos,postPage.getNumber(),postPage.getTotalPages());
+        return ResponseEntity.ok(response);
     }
 
     // ID 기반 검색
@@ -103,16 +109,33 @@ public class PostController {
     }
 
     // 제목 기반 검색(포함하면 반환)
+//    @GetMapping("/search/title")
+//    public ResponseEntity<?> searchTitle(@RequestParam String title) throws BaseException {
+//        List<Post> postList=postService.findByTitle(title);
+//        if(postList.isEmpty()){
+//            throw new BaseException(ErrorCode.POST_NOT_FOUND);
+//        }
+//        List<PostDto> postDtos=postList.stream()
+//                .map(PostDto::new)
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(postDtos);
+//    }
+
+
     @GetMapping("/search/title")
-    public ResponseEntity<?> searchTitle(@RequestParam String title) throws BaseException {
-        List<Post> postList=postService.findByTitle(title);
-        if(postList.isEmpty()){
+    public ResponseEntity<PageResponse<PostDto>> searchTitle(@RequestParam String title
+            ,@RequestParam(defaultValue = "0") int page
+            ,@RequestParam(defaultValue = "10") int size) throws BaseException {
+        Pageable pageable=PageRequest.of(page,size);
+        Page<Post> postPage=postService.findByTitle(title,pageable);
+        if(postPage.isEmpty()){
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }
-        List<PostDto> postDtos=postList.stream()
+        List<PostDto> postDtos=postPage.stream()
                 .map(PostDto::new)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(postDtos);
+        PageResponse<PostDto> response=new PageResponse<>(postDtos,postPage.getNumber(),postPage.getTotalPages());
+        return ResponseEntity.ok(response);
     }
 
     // 내용 기반 검색(포함하면 반환)
@@ -159,5 +182,4 @@ public class PostController {
 
 
 
-    // 페이징 처리
 }
