@@ -109,7 +109,10 @@ public class PostController {
         if(postList.isEmpty()){
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }
-        return ResponseEntity.ok(postList);
+        List<PostDto> postDtos=postList.stream()
+                .map(PostDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(postDtos);
     }
 
     // 내용 기반 검색(포함하면 반환)
@@ -119,7 +122,10 @@ public class PostController {
         if(postList.isEmpty()){
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }
-        return ResponseEntity.ok(postList);
+        List<PostDto> postDtos=postList.stream()
+                .map(PostDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(postDtos);
     }
 
     //제목 + 내용 같이 검색
@@ -129,7 +135,10 @@ public class PostController {
         if(postList.isEmpty()){
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }else{
-            return ResponseEntity.ok(postList);
+            List<PostDto> postDtos=postList.stream()
+                    .map(PostDto::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(postDtos);
         }
     }
 
@@ -141,9 +150,13 @@ public class PostController {
         if(postList.isEmpty()){
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }else{
-            return ResponseEntity.ok(postList);
+            List<PostDto> postDtos=postList.stream()
+                    .map(PostDto::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(postDtos);
         }
     }
+
 
 
     // 페이징 처리
