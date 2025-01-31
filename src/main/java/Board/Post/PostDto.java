@@ -12,6 +12,7 @@ public class PostDto {
     private String content;
     private String author;
     private int likes;
+    private int disLikes;
     private LocalDateTime createTime;
     private LocalDateTime modifyTime;
 
@@ -21,6 +22,7 @@ public class PostDto {
         this.content = post.getContent();
         this.author =post.getAuthor().getUsername();
         this.likes=post.getLikes().size();
+        this.disLikes=post.getDislikes().size();
         this.createTime = post.getCreateTime();
         this.modifyTime=post.getModifyTime();
     }

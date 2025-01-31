@@ -2,6 +2,7 @@ package Board.Post;
 
 import Board.User.SiteUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,9 @@ public class Post {
     @OneToMany
     private Set<SiteUser> likes=new HashSet<>();
 
+    @OneToMany
+    private Set<SiteUser> dislikes=new HashSet<>();
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime createTime;
 
@@ -41,6 +45,12 @@ public class Post {
     }
     public void subLike(SiteUser user) {
         likes.remove(user);
+    }
+    public void addDislike(SiteUser user) {
+        dislikes.add(user);
+    }
+    public void subDislike(SiteUser user) {
+        dislikes.remove(user);
     }
 
 }

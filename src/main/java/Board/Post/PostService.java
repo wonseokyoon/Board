@@ -91,4 +91,21 @@ public class PostService {
         }
         return postRepository.save(post);
     }
+
+
+    public Post addDislike(Post post, SiteUser user) {
+        Set<SiteUser> userDislike = post.getDislikes();
+        Set<SiteUser> userLike=post.getLikes();
+
+        if(userLike.contains(user)){
+            post.subLike(user);
+        }
+        if(userDislike.contains(user)){
+            post.subDislike(user);
+        }else{
+            post.addDislike(user);
+        }
+        return postRepository.save(post);
+
+    }
 }

@@ -6,6 +6,7 @@ import Board.Exception.ErrorCode;
 import Board.User.SiteUser;
 import Board.User.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -196,4 +197,20 @@ public class PostController {
         }
     }
 
+    @PostMapping("/dislike/{id}")
+    public ResponseEntity<?> disLikePost(@PathVariable("id") Integer id,Principal principal) throws BaseException {
+        if(principal==null){
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+        SiteUser user= userService.getUser(principal.getName());
+        Optional<Post> post=postService.findById(id);
+
+        if(post.isEmpty()){
+            throw new BaseException(ErrorCode.POST_NOT_FOUND);
+        }else{
+            Post dislikedPost=postService.addDislike(post.get(),user);
+            PostDto postDto=new PostDto(dislikedPost);
+            return ResponseEntity.ok(postDto);
+        }
+    }
 }
