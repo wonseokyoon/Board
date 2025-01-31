@@ -65,7 +65,7 @@ public class PostService {
     }
 
     public List<Post> findByUser(SiteUser user) {
-        List<Post> postList=postRepository.findByUser(user);
+        List<Post> postList=postRepository.findByAuthor(user);
         return postList;
 
     }
