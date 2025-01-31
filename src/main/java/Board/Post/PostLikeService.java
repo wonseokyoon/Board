@@ -3,10 +3,12 @@ package Board.Post;
 import Board.User.SiteUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 public class PostLikeService {
 
     @Autowired
@@ -24,8 +26,6 @@ public class PostLikeService {
             subDisLike(post,user);
         }
         PostLikes likes=new PostLikes(post,user);
-        likes.setPost(post);
-        likes.setUser(user);
         postLikeRepository.save(likes);
         return post;
     }
@@ -33,6 +33,7 @@ public class PostLikeService {
         Optional<PostLikes> likes=postLikeRepository.findByPostAndUser(post,user);
         if(likes.isPresent()){
             postLikeRepository.delete(likes.get());
+            postLikeRepository.flush();
         }
         return post;
     }
@@ -47,8 +48,6 @@ public class PostLikeService {
             subLike(post,user);
         }
         PostDisLikes dislikes= new PostDisLikes(post,user);
-        dislikes.setPost(post);
-        dislikes.setUser(user);
         postDislikeRepository.save(dislikes);
         return post;
     }
@@ -56,8 +55,8 @@ public class PostLikeService {
         Optional<PostDisLikes> dislikes=postDislikeRepository.findByPostAndUser(post,user);
         if(dislikes.isPresent()){
             postDislikeRepository.delete(dislikes.get());
+            postLikeRepository.flush();
         }
         return post;
     }
-
 }
