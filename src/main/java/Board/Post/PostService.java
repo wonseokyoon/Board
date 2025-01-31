@@ -81,4 +81,14 @@ public class PostService {
         return postList;
 
     }
+
+    public Post addLike(Post post,SiteUser user) {
+        Set<SiteUser> userList=post.getLikes();
+        if(userList.contains(user)){
+            post.subLike(user);
+        }else{
+            post.addLike(user);
+        }
+        return postRepository.save(post);
+    }
 }

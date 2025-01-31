@@ -180,6 +180,20 @@ public class PostController {
         }
     }
 
-
+    @PostMapping("/like/{id}")
+    public ResponseEntity<?> likePost(@PathVariable("id") Integer id,Principal principal) throws BaseException {
+        if(principal==null){
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+        SiteUser user= userService.getUser(principal.getName());
+        Optional<Post> post=postService.findById(id);
+        if(post.isEmpty()){
+            throw new BaseException(ErrorCode.POST_NOT_FOUND);
+        }else{
+            Post likedPost=postService.addLike(post.get(),user);
+            PostDto postDto=new PostDto(likedPost);
+            return ResponseEntity.ok(postDto);
+        }
+    }
 
 }

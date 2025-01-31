@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,10 +27,20 @@ public class Post {
     @ManyToOne
     private SiteUser author;
 
+    @OneToMany
+    private Set<SiteUser> likes=new HashSet<>();
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime createTime;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime modifyTime;
+
+    public void addLike(SiteUser user) {
+        likes.add(user);
+    }
+    public void subLike(SiteUser user) {
+        likes.remove(user);
+    }
 
 }
