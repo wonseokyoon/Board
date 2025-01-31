@@ -28,11 +28,11 @@ public class Post {
     @ManyToOne
     private SiteUser author;
 
-    @OneToMany
-    private Set<SiteUser> likes=new HashSet<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PostLikes> likes = new HashSet<>();
 
-    @OneToMany
-    private Set<SiteUser> dislikes=new HashSet<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PostDisLikes> dislikes = new HashSet<>();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime createTime;
@@ -40,17 +40,6 @@ public class Post {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime modifyTime;
 
-    public void addLike(SiteUser user) {
-        likes.add(user);
-    }
-    public void subLike(SiteUser user) {
-        likes.remove(user);
-    }
-    public void addDislike(SiteUser user) {
-        dislikes.add(user);
-    }
-    public void subDislike(SiteUser user) {
-        dislikes.remove(user);
-    }
+
 
 }

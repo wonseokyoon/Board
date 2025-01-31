@@ -29,7 +29,7 @@ public class PostController {
 
     private final PostService postService;
     private final UserService userService;
-
+    private final PostLikeService postLikeService;
     //작성
 
     @PostMapping("/create")
@@ -191,7 +191,7 @@ public class PostController {
         if(post.isEmpty()){
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }else{
-            Post likedPost=postService.addLike(post.get(),user);
+            Post likedPost=postLikeService.addLike(post.get(),user);
             PostDto postDto=new PostDto(likedPost);
             return ResponseEntity.ok(postDto);
         }
@@ -208,7 +208,7 @@ public class PostController {
         if(post.isEmpty()){
             throw new BaseException(ErrorCode.POST_NOT_FOUND);
         }else{
-            Post dislikedPost=postService.addDislike(post.get(),user);
+            Post dislikedPost=postLikeService.addDislike(post.get(),user);
             PostDto postDto=new PostDto(dislikedPost);
             return ResponseEntity.ok(postDto);
         }

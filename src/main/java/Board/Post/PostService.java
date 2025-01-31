@@ -4,6 +4,7 @@ import Board.User.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
 
     public Post create(Post post, SiteUser user) {
         post.setCreateTime(LocalDateTime.now());
@@ -82,30 +84,5 @@ public class PostService {
 
     }
 
-    public Post addLike(Post post,SiteUser user) {
-        Set<SiteUser> userList=post.getLikes();
-        if(userList.contains(user)){
-            post.subLike(user);
-        }else{
-            post.addLike(user);
-        }
-        return postRepository.save(post);
-    }
 
-
-    public Post addDislike(Post post, SiteUser user) {
-        Set<SiteUser> userDislike = post.getDislikes();
-        Set<SiteUser> userLike=post.getLikes();
-
-        if(userLike.contains(user)){
-            post.subLike(user);
-        }
-        if(userDislike.contains(user)){
-            post.subDislike(user);
-        }else{
-            post.addDislike(user);
-        }
-        return postRepository.save(post);
-
-    }
 }
