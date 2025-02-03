@@ -32,7 +32,8 @@ public class CommentResponse {
         private int id;
         private String content;
         private String author;
-        //like,dislike
+        private int likes;
+//        private int disLikes;
 
         private LocalDateTime createTime;
         private LocalDateTime modifyTime;
@@ -43,8 +44,7 @@ public class CommentResponse {
             this.author= comment.getAuthor().getUsername();
             this.createTime= comment.getCreateTime();
             this.modifyTime= comment.getModifyTime();
-
-//            this.likes=post.getLikes().size();
+            this.likes=comment.getLikes().size();
 //        this.disLikes=post.getDislikes().size();
         }
     }

@@ -2,13 +2,11 @@ package Board.Comment;
 
 import Board.Exception.BaseException;
 import Board.Exception.ErrorCode;
+import Board.Like.CommentLikes;
+import Board.Like.CommentLikeRepository;
 import Board.Post.Post;
-import Board.Post.PostRepository;
-import Board.Post.PostService;
 import Board.User.SiteUser;
-import com.zaxxer.hikari.metrics.PoolStats;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +18,7 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
-    private PostService postService;
+    private CommentLikeRepository commentLikeRepository;
 
 
     public Comment create(Comment comment, SiteUser user,Post post) {
@@ -38,5 +36,30 @@ public class CommentService {
     public List<Comment> findByPost(Post post) {
         List<Comment> commentList=commentRepository.findByPost(post);
         return commentList;
+    }
+
+    public Comment findById(Integer id) throws BaseException {
+        Optional<Comment> comment=commentRepository.findById(id);
+        if(comment.isEmpty()) throw new BaseException(ErrorCode.COMMENT_NOT_FOUND);
+        return comment.get();
+    }
+
+    public Comment addLike(Comment comment, SiteUser user) {
+        // 이미 따봉 누름
+        if(commentLikeRepository.findByCommentAndAuthor(comment,user).isPresent()){
+            return sublike(comment,user);
+        }
+        CommentLikes likes=new CommentLikes(comment,user);
+        commentLikeRepository.save(likes);
+        return comment;
+    }
+
+    private Comment sublike(Comment comment, SiteUser user){
+        Optional<CommentLikes> likes=commentLikeRepository.findByCommentAndAuthor(comment, user);
+        if(likes.isPresent()){
+            commentLikeRepository.delete(likes.get());
+            commentLikeRepository.flush();
+        }
+        return comment;
     }
 }

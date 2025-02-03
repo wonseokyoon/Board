@@ -74,6 +74,21 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
+    // 따봉
+    @PostMapping("/like/{id}")
+    public ResponseEntity<?> likeComment(@PathVariable("id") Integer id,Principal principal) throws BaseException {
+        if(principal==null){
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+        SiteUser user= userService.getUser(principal.getName());
+        Comment comment=commentService.findById(id);
+
+        Comment likedComment=commentService.addLike(comment,user);
+        CommentResponse response=new CommentResponse(likedComment);
+        return ResponseEntity.ok(response);
+    }
+
+
 
 
 }

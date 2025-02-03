@@ -1,5 +1,7 @@
 package Board.Comment;
 
+import Board.Like.CommentDisLikes;
+import Board.Like.CommentLikes;
 import Board.Post.Post;
 import Board.User.SiteUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -9,6 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -27,12 +31,12 @@ public class Comment {
     @ManyToOne
     @JsonBackReference
     private Post post;
-//
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<PostLikes> likes = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<PostDisLikes> dislikes = new HashSet<>();
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CommentLikes> likes = new HashSet<>();
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CommentDisLikes> dislikes = new HashSet<>();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime createTime;
