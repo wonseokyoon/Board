@@ -34,4 +34,9 @@ public class CommentService {
         List<Comment> commentList=commentRepository.findByAuthor(user);
         return commentList;
     }
+
+    public List<Comment> findByPost(Post post) {
+        List<Comment> commentList=commentRepository.findByPost(post);
+        return commentList;
+    }
 }

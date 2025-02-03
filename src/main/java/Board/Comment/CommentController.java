@@ -60,6 +60,19 @@ public class CommentController {
     }
 
     //게시글 기반 검색
+    @GetMapping("search/post")
+    public ResponseEntity<?> searchPost(@RequestParam Integer postId) throws BaseException {
+        Optional<Post> post=postService.findById(postId);
+        if(post.isEmpty()) throw new BaseException(ErrorCode.POST_NOT_FOUND);
+
+        List<Comment> commentList=commentService.findByPost(post.get());
+        if (commentList.isEmpty()) throw new BaseException(ErrorCode.COMMENT_NOT_FOUND);
+
+        List<CommentResponse.CommentDetails> response=commentList.stream()
+                .map(CommentResponse.CommentDetails::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
+    }
 
 
 
