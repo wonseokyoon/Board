@@ -1,7 +1,8 @@
 package Board.Post;
 
+import Board.Comment.Comment;
+import Board.Like.PostLikeRepository;
 import Board.Post.Dto.UpdateRequest;
-import Board.Post.Entity.Post;
 import Board.User.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -85,5 +86,11 @@ public class PostService {
 
     }
 
+    public Post createComment(Post post, Comment comment) {
+        List<Comment> commentList=post.getComments();
+        commentList.add(comment);
+        postRepository.save(post);
 
+        return post;
+    }
 }

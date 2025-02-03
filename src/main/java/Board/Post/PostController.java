@@ -3,10 +3,10 @@ package Board.Post;
 
 import Board.Exception.BaseException;
 import Board.Exception.ErrorCode;
+import Board.Like.PostLikeService;
 import Board.Post.Dto.PageResponse;
 import Board.Post.Dto.PostDto;
 import Board.Post.Dto.UpdateRequest;
-import Board.Post.Entity.Post;
 import Board.User.SiteUser;
 import Board.User.UserService;
 import lombok.RequiredArgsConstructor;
@@ -182,6 +182,8 @@ public class PostController {
         }
     }
 
+
+    //좋아요
     @PostMapping("/like/{id}")
     public ResponseEntity<?> likePost(@PathVariable("id") Integer id,Principal principal) throws BaseException {
         if(principal==null){
@@ -198,6 +200,7 @@ public class PostController {
         }
     }
 
+    //싫어요
     @PostMapping("/dislike/{id}")
     public ResponseEntity<?> disLikePost(@PathVariable("id") Integer id,Principal principal) throws BaseException {
         if(principal==null){
@@ -214,4 +217,7 @@ public class PostController {
             return ResponseEntity.ok(postDto);
         }
     }
+
+    // 댓글
+
 }

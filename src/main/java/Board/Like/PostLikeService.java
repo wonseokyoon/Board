@@ -1,8 +1,6 @@
-package Board.Post;
+package Board.Like;
 
-import Board.Post.Entity.Post;
-import Board.Post.Entity.PostDisLikes;
-import Board.Post.Entity.PostLikes;
+import Board.Post.Post;
 import Board.User.SiteUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

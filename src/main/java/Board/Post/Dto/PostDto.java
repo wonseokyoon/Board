@@ -1,6 +1,6 @@
 package Board.Post.Dto;
 
-import Board.Post.Entity.Post;
+import Board.Post.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;

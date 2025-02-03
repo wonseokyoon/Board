@@ -1,7 +1,7 @@
-package Board.Post;
+package Board.Like;
 
-import Board.Post.Entity.Post;
-import Board.Post.Entity.PostDisLikes;
+import Board.Like.PostDisLikes;
+import Board.Post.Post;
 import Board.User.SiteUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
