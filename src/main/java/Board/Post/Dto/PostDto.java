@@ -1,11 +1,12 @@
 package Board.Post.Dto;
 
-import Board.Comment.Comment;
+import Board.Comment.CommentResponse;
 import Board.Post.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class PostDto {
@@ -15,7 +16,7 @@ public class PostDto {
     private String author;
     private int likes;
     private int disLikes;
-    private List<Comment> commentList;
+    private List<CommentResponse.CommentDetails> commentList;
     private LocalDateTime createTime;
     private LocalDateTime modifyTime;
 
@@ -26,7 +27,9 @@ public class PostDto {
         this.author =post.getAuthor().getUsername();
         this.likes=post.getLikes().size();
         this.disLikes=post.getDislikes().size();
-        this.commentList=post.getComments();
+        this.commentList=post.getComments().stream()
+                .map(CommentResponse.CommentDetails::new)
+                .collect(Collectors.toList());
         this.createTime = post.getCreateTime();
         this.modifyTime=post.getModifyTime();
     }

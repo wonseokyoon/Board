@@ -7,7 +7,6 @@ import Board.Post.PostService;
 import Board.User.SiteUser;
 import Board.User.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,7 @@ public class CommentController {
         if(post.isEmpty()) throw new BaseException(ErrorCode.POST_NOT_FOUND);
 
         Comment createdComment=commentService.create(comment,user, post.get());
-        ResponseDto dto=new ResponseDto(createdComment);
+        CommentResponse dto=new CommentResponse(createdComment);
 
         return ResponseEntity.ok(dto);
     }
