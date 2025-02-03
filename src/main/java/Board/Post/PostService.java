@@ -86,11 +86,4 @@ public class PostService {
 
     }
 
-    public Post createComment(Post post, Comment comment) {
-        List<Comment> commentList=post.getComments();
-        commentList.add(comment);
-        postRepository.save(post);
-
-        return post;
-    }
 }

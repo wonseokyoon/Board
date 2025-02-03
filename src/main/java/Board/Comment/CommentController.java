@@ -36,13 +36,13 @@ public class CommentController {
         SiteUser user= userService.getUser(principal.getName());
         Optional<Post> post=postService.findById(postId);
         if(post.isEmpty()) throw new BaseException(ErrorCode.POST_NOT_FOUND);
-        postService.createComment(post.get(),comment);
 
         Comment createdComment=commentService.create(comment,user, post.get());
         ResponseDto dto=new ResponseDto(createdComment);
 
         return ResponseEntity.ok(dto);
-
     }
+
+
 
 }

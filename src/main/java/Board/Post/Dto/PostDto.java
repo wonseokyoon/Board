@@ -1,9 +1,11 @@
 package Board.Post.Dto;
 
+import Board.Comment.Comment;
 import Board.Post.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class PostDto {
@@ -13,6 +15,7 @@ public class PostDto {
     private String author;
     private int likes;
     private int disLikes;
+    private List<Comment> commentList;
     private LocalDateTime createTime;
     private LocalDateTime modifyTime;
 
@@ -23,6 +26,7 @@ public class PostDto {
         this.author =post.getAuthor().getUsername();
         this.likes=post.getLikes().size();
         this.disLikes=post.getDislikes().size();
+        this.commentList=post.getComments();
         this.createTime = post.getCreateTime();
         this.modifyTime=post.getModifyTime();
     }
