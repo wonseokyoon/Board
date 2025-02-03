@@ -26,10 +26,10 @@ public class PostService {
         return postRepository.save(post);
     }
 
-//    public List<Post> list() {
-//        List<Post> postList=postRepository.findAll();
-//        return postList;
-//    }
+    public List<Post> list() {
+        List<Post> postList=postRepository.findAll();
+        return postList;
+    }
 
     public Page<Post> list(Pageable pageable){
         Page<Post> postList=postRepository.findAll(pageable);

@@ -79,7 +79,6 @@ public class CommentService {
         if(commentLikeRepository.findByCommentAndAuthor(comment, user).isPresent()){
             sublike(comment,user);
         }
-
         CommentDisLikes disLikes=new CommentDisLikes(comment,user);
         commentDisLikeRepository.save(disLikes);
         return comment;
