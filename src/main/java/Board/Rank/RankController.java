@@ -26,8 +26,8 @@ public class RankController {
     ResponseEntity<?> rankByLike(){
         List<Post> postList=postService.list();
         List<Post> sortedList=rankService.byLike(postList);
-        List<PostDto> response=sortedList.stream()
-                .map(PostDto::new)
+        List<RankResponse> response=sortedList.stream()
+                .map(post->new RankResponse(sortedList.indexOf(post)+1,post))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(response);
     }
