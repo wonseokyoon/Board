@@ -52,6 +52,10 @@ public class CommentService {
         if(commentLikeRepository.findByCommentAndAuthor(comment,user).isPresent()){
             return sublike(comment,user);
         }
+        // 싫어요 취소
+        if(commentDisLikeRepository.findByCommentAndAuthor(comment, user).isPresent()){
+            subDisLike(comment,user);
+        }
         CommentLikes likes=new CommentLikes(comment,user);
         commentLikeRepository.save(likes);
         return comment;
@@ -71,6 +75,11 @@ public class CommentService {
         if(commentDisLikeRepository.findByCommentAndAuthor(comment,user).isPresent()){
             return subDisLike(comment,user);
         }
+        // 좋아요 취소
+        if(commentLikeRepository.findByCommentAndAuthor(comment, user).isPresent()){
+            sublike(comment,user);
+        }
+
         CommentDisLikes disLikes=new CommentDisLikes(comment,user);
         commentDisLikeRepository.save(disLikes);
         return comment;
