@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Transactional
@@ -41,6 +43,23 @@ public class CommentController {
 
         return ResponseEntity.ok(dto);
     }
+
+    // 유저 기반 검색
+    @GetMapping("/search/user")
+    public ResponseEntity<?> searchUser(@RequestParam String name) throws BaseException {
+        SiteUser user= userService.getUser(name);
+        List<Comment> commentList=commentService.findByUser(user);
+        if(commentList.isEmpty()){
+            throw new BaseException(ErrorCode.COMMENT_NOT_FOUND);
+        }
+        List<CommentResponse> commentResponses=commentList.stream()
+                .map(CommentResponse::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(commentResponses);
+
+    }
+
+    //게시글 기반 검색
 
 
 

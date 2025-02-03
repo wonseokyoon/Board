@@ -12,6 +12,7 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,5 +28,10 @@ public class CommentService {
         comment.setAuthor(user);
         comment.setPost(post);
         return commentRepository.save(comment);
+    }
+
+    public List<Comment> findByUser(SiteUser user) {
+        List<Comment> commentList=commentRepository.findByAuthor(user);
+        return commentList;
     }
 }

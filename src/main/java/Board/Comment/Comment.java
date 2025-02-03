@@ -1,8 +1,6 @@
 package Board.Comment;
 
 import Board.Post.Post;
-import Board.Like.PostDisLikes;
-import Board.Like.PostLikes;
 import Board.User.SiteUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -11,8 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -25,6 +21,7 @@ public class Comment {
     private String content;
 
     @ManyToOne
+    @JsonBackReference
     private SiteUser author;
 
     @ManyToOne
