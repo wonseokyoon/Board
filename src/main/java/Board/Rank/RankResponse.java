@@ -7,12 +7,12 @@ import java.util.List;
 
 @Data
 public class RankResponse {
-    private int id;
+    private int rank;
     private PostDetails post;
     private int likes;
 
-    public RankResponse(int id,Post post){
-        this.id=id;
+    public RankResponse(int rank,Post post){
+        this.rank=rank;
         this.post=new PostDetails(post);
         this.likes=post.getLikes().size();
     }
