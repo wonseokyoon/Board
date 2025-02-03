@@ -88,6 +88,21 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
+    // 싫어요
+    @PostMapping("/dislike/{id}")
+    public ResponseEntity<?> disLikeComment(@PathVariable("id") Integer id,Principal principal) throws BaseException {
+        if(principal==null){
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+        SiteUser user= userService.getUser(principal.getName());
+        Comment comment= commentService.findById(id);
+
+        Comment disLikedComment=commentService.addDisLike(comment,user);
+        CommentResponse response=new CommentResponse(disLikedComment);
+        return ResponseEntity.ok(response);
+
+    }
+
 
 
 

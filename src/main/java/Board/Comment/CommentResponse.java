@@ -33,7 +33,7 @@ public class CommentResponse {
         private String content;
         private String author;
         private int likes;
-//        private int disLikes;
+        private int disLikes;
 
         private LocalDateTime createTime;
         private LocalDateTime modifyTime;
@@ -45,7 +45,7 @@ public class CommentResponse {
             this.createTime= comment.getCreateTime();
             this.modifyTime= comment.getModifyTime();
             this.likes=comment.getLikes().size();
-//        this.disLikes=post.getDislikes().size();
+            this.disLikes=comment.getDislikes().size();
         }
     }
 

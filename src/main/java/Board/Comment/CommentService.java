@@ -2,6 +2,8 @@ package Board.Comment;
 
 import Board.Exception.BaseException;
 import Board.Exception.ErrorCode;
+import Board.Like.CommentDisLikeRepository;
+import Board.Like.CommentDisLikes;
 import Board.Like.CommentLikes;
 import Board.Like.CommentLikeRepository;
 import Board.Post.Post;
@@ -19,7 +21,8 @@ public class CommentService {
     private CommentRepository commentRepository;
     @Autowired
     private CommentLikeRepository commentLikeRepository;
-
+    @Autowired
+    private CommentDisLikeRepository commentDisLikeRepository;
 
     public Comment create(Comment comment, SiteUser user,Post post) {
         comment.setCreateTime(LocalDateTime.now());
@@ -59,6 +62,25 @@ public class CommentService {
         if(likes.isPresent()){
             commentLikeRepository.delete(likes.get());
             commentLikeRepository.flush();
+        }
+        return comment;
+    }
+
+    public Comment addDisLike(Comment comment,SiteUser user) {
+        //이미 싫어요
+        if(commentDisLikeRepository.findByCommentAndAuthor(comment,user).isPresent()){
+            return subDisLike(comment,user);
+        }
+        CommentDisLikes disLikes=new CommentDisLikes(comment,user);
+        commentDisLikeRepository.save(disLikes);
+        return comment;
+    }
+
+    private Comment subDisLike(Comment comment, SiteUser user) {
+        Optional<CommentDisLikes> disLikes=commentDisLikeRepository.findByCommentAndAuthor(comment, user);
+        if(disLikes.isPresent()){
+            commentDisLikeRepository.delete(disLikes.get());
+            commentDisLikeRepository.flush();
         }
         return comment;
     }
