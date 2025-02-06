@@ -2,6 +2,7 @@ package Board.Comment;
 
 
 import Board.Post.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -35,8 +36,11 @@ public class CommentResponse {
         private int likes;
         private int disLikes;
 
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
         private LocalDateTime createTime;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
         private LocalDateTime modifyTime;
+
 
         public CommentDetails(Comment comment){
             this.id=comment.getId();

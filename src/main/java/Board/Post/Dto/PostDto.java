@@ -2,6 +2,7 @@ package Board.Post.Dto;
 
 import Board.Comment.CommentResponse;
 import Board.Post.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,9 @@ public class PostDto {
     private int likes;
     private int disLikes;
     private List<CommentResponse.CommentDetails> commentList;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime createTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private LocalDateTime modifyTime;
 
     public PostDto(Post post) {
