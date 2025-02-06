@@ -25,10 +25,17 @@ public class RankController {
     @GetMapping("like")
     ResponseEntity<?> rankByLike(){
         List<Post> postList=postService.list();
-        List<Post> sortedList=rankService.byLike(postList);
+
+        // 상위 10개만
+        List<Post> sortedList=rankService.byLike(postList)
+                .stream()
+                .limit(10)
+                .collect(Collectors.toList());
+
         List<RankResponse> response=sortedList.stream()
                 .map(post->new RankResponse(sortedList.indexOf(post)+1,post))
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(response);
     }
 
