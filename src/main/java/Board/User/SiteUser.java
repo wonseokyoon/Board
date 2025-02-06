@@ -29,7 +29,7 @@ public class SiteUser {
     private String email;
 
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference(value = "userComments")
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,orphanRemoval = true)

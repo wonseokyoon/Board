@@ -92,4 +92,10 @@ public class CommentService {
         }
         return comment;
     }
+
+    public Comment modify(Comment comment, String content){
+        comment.setModifyTime(LocalDateTime.now());
+        comment.setContent(content);
+        return commentRepository.save(comment);
+    }
 }

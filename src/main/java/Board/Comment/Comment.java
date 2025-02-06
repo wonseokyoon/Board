@@ -25,11 +25,11 @@ public class Comment {
     private String content;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "userComments")
     private SiteUser author;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "postComments")
     private Post post;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)

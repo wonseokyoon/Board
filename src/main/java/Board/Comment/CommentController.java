@@ -104,7 +104,24 @@ public class CommentController {
     }
 
     // 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modifyComment(@PathVariable("id") Integer id
+            , @RequestBody CommentRequest commentRequest, Principal principal) throws BaseException {
+        if (principal == null) {
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
 
+        Comment comment=commentService.findById(id);
+        SiteUser user=comment.getAuthor();
+        SiteUser currentUser=userService.getUser(principal.getName());
+
+        if(!user.getId().equals(currentUser.getId())){
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+        Comment modified=commentService.modify(comment, commentRequest.getContent());
+        CommentResponse response=new CommentResponse(modified);
+        return ResponseEntity.ok(response);
+    }
 
 
 }

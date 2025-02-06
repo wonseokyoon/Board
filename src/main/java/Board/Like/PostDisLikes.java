@@ -17,7 +17,7 @@ public class PostDisLikes {
     private Integer id;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "postDislikes")
     private Post post;
 
     @ManyToOne
