@@ -123,5 +123,19 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteComment(@PathVariable("id") Integer id, Principal principal) throws BaseException {
+        if(principal==null){
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+        Comment comment=commentService.findById(id);
+        SiteUser user=comment.getAuthor();  // 댓글 작성자
+        SiteUser currentUser=userService.getUser(principal.getName()); // 로그인 사용자
+        if(!user.getId().equals(currentUser.getId())){
+            throw new BaseException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+        commentService.delete(comment);
+        return ResponseEntity.ok("댓글이 삭제되었습니다.");
+    }
 
 }

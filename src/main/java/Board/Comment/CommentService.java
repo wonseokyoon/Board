@@ -98,4 +98,8 @@ public class CommentService {
         comment.setContent(content);
         return commentRepository.save(comment);
     }
+
+    public void delete(Comment comment) {
+        commentRepository.delete(comment);
+    }
 }

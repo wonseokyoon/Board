@@ -1,6 +1,5 @@
 package Board.Rank;
 
-import Board.Post.Dto.PostDto;
 import Board.Post.Post;
 import Board.Post.PostService;
 import lombok.RequiredArgsConstructor;
@@ -55,8 +54,5 @@ public class RankController {
 
         return ResponseEntity.ok(responses);
     }
-
-
-
 
 }
