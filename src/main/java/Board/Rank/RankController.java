@@ -30,7 +30,7 @@ public class RankController {
         List<Post> sortedList=rankService.byLike(postList)
                 .stream()
                 .limit(10)
-                .collect(Collectors.toList());
+                .toList();
 
         List<RankResponse> response=sortedList.stream()
                 .map(post->new RankResponse(sortedList.indexOf(post)+1,post))
@@ -38,6 +38,24 @@ public class RankController {
 
         return ResponseEntity.ok(response);
     }
+
+    // 싫어요 순위
+    @GetMapping("dislike")
+    ResponseEntity<?> rankByDislike(){
+        List<Post> postList=postService.list();
+
+        List<Post> sortedList=rankService.byDisLike(postList)
+                .stream()
+                .limit(10)
+                .toList();
+
+        List<RankResponse> responses=sortedList.stream()
+                .map(post -> new RankResponse(sortedList.indexOf(post)+1,post))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(responses);
+    }
+
 
 
 

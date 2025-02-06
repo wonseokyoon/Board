@@ -23,4 +23,10 @@ public class RankService {
                 Integer.compare(post2.getLikes().size(), post1.getLikes().size()));
         return postList;
     }
+
+    public List<Post> byDisLike(List<Post> postList) {
+        postList.sort((post1,post2) ->
+                Integer.compare(post2.getDislikes().size(), post1.getDislikes().size()));
+        return postList;
+    }
 }
